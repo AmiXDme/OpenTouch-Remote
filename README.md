@@ -52,4 +52,12 @@ uv run main.py
 - **FPS Counter**: Monitor your connection performance in real-time.
 
 ---
+
+## 📺 Watch it in Action
+
+If you want to see more high-performance technical showcases and development logic:
+
+[**▶️ Visit the AmiXDme YouTube Channel**](https://www.youtube.com/@AmiXDme)
+
+---
 *Built with FastAPI, Socket.IO, pynput, and DXcam.*
