@@ -1,6 +1,8 @@
 # OpenTouch-Remote
 
-A high-performance Python-based remote desktop server designed to mirror your Windows desktop to a mobile browser via a local network. Optimized for ultra-low latency touch inputs and high-frequency native resolution screen capture.
+**🚀 A high-performance DXGI Windows mirroring engine. AI-born, ready for human engineering.**
+
+`dxgi` • `desktop-duplication` • `low-latency-streaming` • `remote-touch` • `high-fps-mirroring` • `no-app-required` • `windows-remote-control` • `ai-born` • `fastapi` • `socket-io` • `dxcam`
 
 ## 🚀 Features
 
