@@ -51,6 +51,10 @@ uv run main.py
 - **Reset Button**: Refresh the connection if the stream stutters.
 - **FPS Counter**: Monitor your connection performance in real-time.
 
+## ⚠️ Security Note
+
+This application is designed for **trusted local networks only**. Both your PC and mobile device must be on the same Wi-Fi network. Do not expose the server to the public internet.
+
 ---
 
 ## 📺 Watch it in Action
@@ -60,4 +64,11 @@ If you want to see more high-performance technical showcases and development log
 [**▶️ Visit the AmiXDme YouTube Channel**](https://www.youtube.com/@AmiXDme)
 
 ---
+
+## 📄 License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
+
+---
+
 *Built with FastAPI, Socket.IO, pynput, and DXcam.*
