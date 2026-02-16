@@ -2,20 +2,40 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 import numpy as np
 
+from src.config import Config
+from src.capture_engine import CaptureEngine
+from src.input_handler import InputHandler
+from src.network_utils import get_local_ip, get_available_port
+from src.qr_display import generate_qr_terminal
+
+
+class TestConfig:
+    def test_config_defaults(self):
+        config = Config()
+        assert config.port == 8000
+        assert config.target_fps == 30
+        assert config.jpeg_quality == 0.85
+        assert config.monitor_idx == 0
+        assert config.verbose is False
+
+    def test_config_custom(self):
+        config = Config(port=9000, target_fps=60, jpeg_quality=0.9)
+        assert config.port == 9000
+        assert config.target_fps == 60
+        assert config.jpeg_quality == 0.9
+
 
 class TestCaptureEngine:
     def test_capture_engine_init(self):
-        from src.capture_engine import CaptureEngine
-
-        engine = CaptureEngine(target_fps=30, jpeg_quality=0.8)
+        config = Config(target_fps=30, jpeg_quality=0.8)
+        engine = CaptureEngine(config)
         assert engine.target_fps == 30
-        assert engine.jpeg_quality == 80
+        assert engine.base_jpeg_quality == 80
         assert engine.running is False
 
     def test_get_desktop_size_fallback(self):
-        from src.capture_engine import CaptureEngine
-
-        engine = CaptureEngine()
+        config = Config()
+        engine = CaptureEngine(config)
 
         import ctypes
 
@@ -28,36 +48,51 @@ class TestCaptureEngine:
         assert height == expected_height
 
     def test_process_frame(self):
-        from src.capture_engine import CaptureEngine
-
-        engine = CaptureEngine()
+        config = Config()
+        engine = CaptureEngine(config)
 
         frame = np.zeros((720, 1280, 3), dtype=np.uint8)
         result = engine._process_frame(frame)
 
         assert result is not None
-        assert isinstance(result, str)
+        assert isinstance(result, bytes)
+
+    def test_set_quality(self):
+        config = Config()
+        engine = CaptureEngine(config)
+
+        engine.set_quality(0.5)
+        assert engine.current_jpeg_quality == 50
+
+        engine.set_quality(1.5)
+        assert engine.current_jpeg_quality == 100
+
+        engine.set_quality(0.2)
+        assert engine.current_jpeg_quality == 30
+
+    def test_get_stats(self):
+        config = Config()
+        engine = CaptureEngine(config)
+
+        stats = engine.get_stats()
+        assert "frames_captured" in stats
+        assert "frames_skipped" in stats
+        assert "frames_sent" in stats
 
 
 class TestInputHandler:
     def test_input_handler_init(self):
-        from src.input_handler import InputHandler
-
         handler = InputHandler()
         assert handler.desktop_width == 1920
         assert handler.desktop_height == 1080
 
     def test_set_desktop_size(self):
-        from src.input_handler import InputHandler
-
         handler = InputHandler()
         handler.set_desktop_size(2560, 1440)
         assert handler.desktop_width == 2560
         assert handler.desktop_height == 1440
 
     def test_transform_coordinates(self):
-        from src.input_handler import InputHandler
-
         handler = InputHandler()
         handler.set_desktop_size(1920, 1080)
 
@@ -66,8 +101,6 @@ class TestInputHandler:
         assert pc_y == 540
 
     def test_transform_coordinates_clamped(self):
-        from src.input_handler import InputHandler
-
         handler = InputHandler()
         handler.set_desktop_size(1920, 1080)
 
@@ -75,18 +108,32 @@ class TestInputHandler:
         assert 0 <= pc_x < 1920
         assert 0 <= pc_y < 1080
 
+    def test_parse_special_key(self):
+        handler = InputHandler()
+
+        from pynput import keyboard
+
+        assert handler._parse_key("Enter") == keyboard.Key.enter
+        assert handler._parse_key("escape") == keyboard.Key.esc
+        assert handler._parse_key("Tab") == keyboard.Key.tab
+
+    def test_parse_char_key(self):
+        handler = InputHandler()
+
+        result = handler._parse_key("a")
+        assert result is not None
+
+        result = handler._parse_key("A")
+        assert result is not None
+
 
 class TestNetworkUtils:
     def test_get_local_ip_returns_string(self):
-        from src.network_utils import get_local_ip
-
         ip = get_local_ip()
         assert isinstance(ip, str)
         assert len(ip) > 0
 
     def test_get_available_port_returns_int(self):
-        from src.network_utils import get_available_port
-
         port = get_available_port(8000)
         assert isinstance(port, int)
         assert port >= 8000
@@ -95,8 +142,6 @@ class TestNetworkUtils:
 
 class TestQRDisplay:
     def test_generate_qr_terminal(self):
-        from src.qr_display import generate_qr_terminal
-
         output = generate_qr_terminal("http://192.168.1.1:8000", clear_screen=False)
 
         assert "OpenTouch-Remote" in output
@@ -124,8 +169,6 @@ class TestCoordinateTransformation:
         expected_x,
         expected_y,
     ):
-        from src.input_handler import InputHandler
-
         handler = InputHandler()
         handler.set_desktop_size(desktop_w, desktop_h)
 
@@ -141,18 +184,34 @@ class TestServerLifecycle:
     def test_server_init(self):
         from src.server import OpenTouchServer
 
-        server = OpenTouchServer(port=8000)
+        config = Config(port=8000)
+        server = OpenTouchServer(config)
 
-        assert server.port == 8000
+        assert server.config.port == 8000
         assert server.capture_engine is not None
         assert server.input_handler is not None
 
     def test_html_page_not_empty(self):
         from src.server import OpenTouchServer
 
-        server = OpenTouchServer()
+        config = Config()
+        server = OpenTouchServer(config)
         html = server._get_html_page()
 
         assert len(html) > 0
         assert "<canvas" in html
         assert "socket.io" in html
+        assert "keyboard-bar" in html
+
+    def test_quality_controller(self):
+        from src.server import QualityController
+
+        qc = QualityController(base_quality=0.85)
+        assert qc.get_quality() == 0.85
+
+        qc.record_latency(300)
+        assert qc.get_quality() < 0.85
+
+        qc.record_latency(20)
+        qc.record_latency(20)
+        qc.record_latency(20)

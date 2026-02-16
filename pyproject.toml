@@ -1,6 +1,6 @@
 [project]
 name = "opentouch-remote"
-version = "0.1.0"
+version = "0.2.0"
 requires-python = ">=3.11"
 dependencies = [
     "dxcam>=0.0.5",
@@ -13,3 +13,6 @@ dependencies = [
     "qrcode>=8.2",
     "uvicorn[standard]>=0.40.0",
 ]
+
+[project.scripts]
+opentouch = "main:main"
