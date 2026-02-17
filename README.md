@@ -2,7 +2,7 @@
 
 **🚀 The Apex of Windows Mirroring. AI-Architected. Human-Engineered.**
 
-Zero bloat. Zero app stores. Just raw **DXGI** performance delivered straight to your browser.
+Zero bloat. Zero lag. Just raw **DXGI** performance delivered straight to your browser. This isn't just a screen share; it's a high-frequency synchronization engine designed for those who demand immediate response.
 
 `dxgi` • `desktop-duplication` • `low-latency` • `remote-touch` • `60fps` • `no-install`
 
@@ -10,26 +10,26 @@ Zero bloat. Zero app stores. Just raw **DXGI** performance delivered straight to
 
 ## ⚡ The Power
 
-Stop using sluggish remote desktop tools. OpenTouch-Remote is built for **speed**.
+Stop using sluggish remote desktop tools that feel like moving through mud. OpenTouch-Remote is built for **speed**.
 
--   **DXGI Capture Core**: Powered by `dxcam`, tapping directly into the Windows GPU pipeline. If it's on your screen, it's on your phone. Instantly.
--   **Intelligent Backpressure**: The engine monitors network congestion in real-time. If your WiFi lags, we drop frames to keep the input responsive. We never crash; we adapt.
--   **Adaptive Quality**: We calculate latency milliseconds. If the network struggles, we compress harder. If it clears, we give you pristine 4K.
--   **Binary WebSockets**: We don't send base64 strings like amateurs. We blast raw binary JPEGs for maximum throughput.
--   **Translation Layer**:
-    -   **Tap** -> Left Click
-    -   **Hold** -> Right Click
-    -   **Drag** -> Hardware Mouse Drag
-    -   **Two-Finger** -> Native Scroll
--   **No App Required**: It's just a web page. But it feels like native code.
+-   **DXGI Capture Core**: Powered by `dxcam`, tapping directly into the Windows GPU pipeline. We don't ask the OS for permission; we take the frames from the buffer.
+-   **Intelligent Backpressure**: Our engine monitors network congestion every millisecond. If your signal drops, we skip frames to keep the interaction live. We don't buffer; we adapt.
+-   **Static Frame Suppression**: We calculate pixel-diffs between frames. If the screen hasn't changed, we don't send anything. Effortless efficiency.
+-   **DPI-Aware Scaling**: We handle Windows High-DPI settings natively. Your touch translates to the exact pixel, no matter how much you've scaled your 4K display.
+-   **Latency-Linked Quality**: Dynamic JPEG compression that breathes with your network. Excellent signal? Pristine pixels. Poor signal? Sharp speed.
+-   **Zero-App Interface**:
+    -   **Tap** -> Precise Left Click
+    -   **Long Press** -> Contextual Right Click
+    -   **Two-Finger Slide** -> Natural Scroll Physics
+    -   **Hardware Drag** -> Seamless window management
 
 ---
 
 ## 🛠️ The Gear (Requirements)
 
--   **OS**: Windows (DXGI is a Windows exclusive).
+-   **OS**: Windows (Required for the DXGI pipeline. No exceptions).
 -   **Python**: 3.11+
--   **Manager**: [uv](https://github.com/astral-sh/uv) (Recommended for speed).
+-   **Manager**: [uv](https://github.com/astral-sh/uv) (We standardise on `uv` for its superior dependency resolution speed).
 
 ---
 
@@ -50,44 +50,44 @@ Stop using sluggish remote desktop tools. OpenTouch-Remote is built for **speed*
     ```bash
     uv run main.py
     ```
-    *Scan the QR code. Control your PC. Done.*
+    *Scan the QR code. Take control. That's it.*
 
 ---
 
-## 🎮 CLI Options
+## 🎮 CLI Mastery
 
-Power users don't click icons. They use flags.
+Control the engine with flags. Don't be basic.
 
 ```bash
 uv run main.py --help
 
 Options:
   --port, -p INT         Server port (default: 8000)
-  --fps, -f INT          Force target FPS 10-60 (default: 30)
-  --quality, -q FLOAT    Set JPEG quality 0.1-1.0 (default: 0.85)
-  --monitor, -m INT      Select monitor index (default: 0)
-  --verbose, -v          Enable debug logging
+  --fps, -f INT          Aggressive FPS target 10-60 (default: 30)
+  --quality, -q FLOAT    Base JPEG quality 0.1-1.0 (default: 0.85)
+  --monitor, -m INT      Target monitor index (0 = primary)
+  --verbose, -v          Show raw engine logs
 ```
 
 ---
 
 ## ⚔️ Contributing
 
-Think you can make it faster? Prove it.
-Read our **[CONTRIBUTING.md](CONTRIBUTING.md)** before you submit a PR. We have strict standards for performance.
+Think you can find an extra 2ms of performance? We want to see it.
+Read our **[CONTRIBUTING.md](CONTRIBUTING.md)** before you touch the code. We have standards.
 
 ---
 
-## 📺 Witness the Performance
+## 📺 Witness the Logic
 
-See the development logic and showcases:
+High-performance technical showcases and development deep-dives:
 [**▶️ Visit the AmiXDme YouTube Channel**](https://www.youtube.com/@AmiXDme)
 
 ---
 
 ## 📄 License
 
-Apache License 2.0. Open source, open power.
+Apache License 2.0. Clean, open, powerful.
 
 ---
 
